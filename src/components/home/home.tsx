@@ -14,7 +14,9 @@ export function Home() {
     return (
         <div>
             <AnalysisInfo></AnalysisInfo>
-            <Button type="primary" style={{ textAlign: 'left' }} onClick={createTransaction}>Create transaction</Button>
+            <div style={{ marginTop: '24px' }}>
+                <Button type="primary" onClick={createTransaction}>Create Transaction</Button>
+            </div>
             <TransactionList></TransactionList>
         </div>
     );

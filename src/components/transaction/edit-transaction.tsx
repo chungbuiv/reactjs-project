@@ -1,10 +1,13 @@
-import { Button, Form, Input, Layout } from 'antd';
+import { Button, Form, Input, notification } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { fetchData } from '../../datasource/fetchData';
 import { Transaction } from '../../models/transaction';
+import { Redirect } from 'react-router-dom';
 
 export default function EditTransaction(props: any) {
+
     const transactionId = props.match.params.id;
+    const [redirect, setRedirect] = useState<boolean>(false);
     const [transaction, setTransaction] = useState<Transaction | null>(null);
     const [saveState, setSaveState] = useState<{ id: string, body: string } | null>(null);
 
@@ -32,24 +35,20 @@ export default function EditTransaction(props: any) {
                     },
                     body: saveState.body
                 });
+                setRedirect(true);
+                notification.success({
+                    message: 'Edit Transaction',
+                    description: "Transaction is updated successfully!",
+                });
             } catch (e) {
                 console.log(e);
+                notification.error({
+                    message: 'Edit Transaction',
+                    description: "Update transaction failed!",
+                });
             }
         })();
     }, [saveState]);
-
-
-    function onChangeName(e: React.ChangeEvent<HTMLInputElement>) {
-        const name = (e.target! as HTMLInputElement).value;
-        console.log(name);
-        setTransaction(transaction => {
-            return {
-                ...transaction!,
-                name: name
-            }
-        })
-    }
-
 
     function onFinish(args: any) {
         console.log(args);
@@ -62,17 +61,20 @@ export default function EditTransaction(props: any) {
 
     function onFinishFailed(...args: any) {
         console.log(args);
+        notification.error({
+            message: 'Edit Transaction',
+            description: "Update transaction failed!",
+        });
     }
 
     return (
-
         <>
-            <div>Edit Profile</div>
+            {redirect ? <Redirect to="/" /> : null}
+            <div>Edit Transaction</div>
             {transaction ? <div>
                 <FormEdit initialValues={transaction} onFinish={onFinish} onFinishFailed={onFinishFailed} />
             </div> : <p>Loading...</p>}
         </>
-
     );
 
 }

@@ -3,14 +3,12 @@ import React, { Suspense } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './App.css';
 import { Home } from './components/home/home';
-import CreateTransaction from './components/transaction/create-transaction';
 import EditTransaction from './components/transaction/edit-transaction';
 import { UserProfile } from './components/user-profile/user-profile';
-
+const EditProfile = React.lazy(() => import('./components/user-profile/edit-profile'));
+const CreateTransaction = React.lazy(() => import('./components/transaction/create-transaction'));
 
 const { Header, Footer, Sider, Content } = Layout;
-
-const EditProfile = React.lazy(() => import('./components/user-profile/edit-profile'));
 
 export default function App() {
 
@@ -19,11 +17,11 @@ export default function App() {
       <div>
 
         <Layout>
-          <Header className="header" style={{ background: '#fff' }}>
+          <Header className="header" style={{ background: '#fff', height: '44px' }}>
             <div className="logo" />
 
           </Header>
-          <Layout>
+          <Layout style={{ borderTopWidth: '1px', borderTopStyle: 'solid', borderTopColor: 'rgb(239, 243, 247)' }}>
 
             <Layout style={{ padding: '0 24px 24px' }}>
               <Content
@@ -57,6 +55,7 @@ export default function App() {
               <UserProfile />
             </Sider>
           </Layout>
+          {/* <Footer>EXPAND TABLE</Footer> */}
         </Layout>
       </div>
     </Router>

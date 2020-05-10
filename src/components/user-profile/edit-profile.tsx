@@ -1,10 +1,12 @@
-import { Button, Form, Input, Layout } from 'antd';
+import { Button, Form, Input, notification } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { fetchData } from '../../datasource/fetchData';
 import { Profile } from '../../models/profile';
+import { Redirect } from 'react-router-dom';
 
 export default function EditProfile() {
 
+    const [redirect, setRedirect] = useState<boolean>(false);
     const [profile, setProfile] = useState<Profile | null>(null);
     const [saveState, setSaveState] = useState<{ id: string, body: string } | null>(null);
 
@@ -33,26 +35,20 @@ export default function EditProfile() {
                     },
                     body: saveState.body
                 });
-                console.log(data);
+                setRedirect(true);
+                notification.success({
+                    message: 'Edit Profile',
+                    description: "User profile is updated successfully!",
+                });
             } catch (e) {
-                console.log(e);
+                notification.error({
+                    message: 'Edit Profile',
+                    description: "Update profile failed!",
+                });
             }
 
         })();
     }, [saveState])
-
-
-    function onChangeName(e: React.ChangeEvent<HTMLInputElement>) {
-        const name = (e.target! as HTMLInputElement).value;
-        console.log(name);
-        setProfile(profile => {
-            return {
-                ...profile!,
-                name: name
-            }
-        })
-    }
-
 
     function onFinish(args: any) {
         console.log(args);
@@ -64,18 +60,21 @@ export default function EditProfile() {
     }
 
     function onFinishFailed(...args: any) {
-        console.log(args);
+        notification.error({
+            message: 'Edit Profile',
+            description: "Update profile failed!",
+        });
     }
 
     return (
         <>
+            {redirect ? <Redirect to="/" /> : null}
             <div>Edit Profile</div>
             {profile ? <div>
                 <FormEdit initialValues={profile} onFinish={onFinish} onFinishFailed={onFinishFailed} />
             </div> : <p>Loading...</p>}
         </>
     );
-
 }
 
 interface FormEditProps {

@@ -1,11 +1,11 @@
-import { Button, Form, Input, Layout } from 'antd';
+import { Button, Form, Input, notification } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { fetchData } from '../../datasource/fetchData';
-
-const { Header, Footer, Sider, Content } = Layout;
+import { Redirect } from 'react-router-dom';
 
 export default function CreateTransaction() {
 
+    const [redirect, setRedirect] = useState<boolean>(false);
     const [saveState, setSaveState] = useState<{ body: string } | null>(null);
 
     useEffect(() => {
@@ -21,9 +21,16 @@ export default function CreateTransaction() {
                     },
                     body: saveState.body
                 });
-                console.log(data);
+                setRedirect(true);
+                notification.success({
+                    message: 'Create Transaction',
+                    description: "Transaction is updated successfully!",
+                });
             } catch (e) {
-                console.log(e);
+                notification.error({
+                    message: 'Create Transaction',
+                    description: "Create transaction failed!",
+                });
             }
 
         })();
@@ -31,52 +38,27 @@ export default function CreateTransaction() {
 
 
     function onFinish(args: any) {
-        console.log(args);
-
         setSaveState({
             body: JSON.stringify(args)
         });
     }
 
     function onFinishFailed(...args: any) {
-        console.log(args);
+        notification.error({
+            message: 'Create Transaction',
+            description: "Create transaction failed!",
+        });
     }
 
     return (
-
         <>
-            <div>Edit Profile</div>
+            {redirect ? <Redirect to="/" /> : null}
+            <div>Create Transaction</div>
             <div>
-                <Layout>
-                    <Header className="header" style={{ background: '#bac7d2' }}>
-                        <div className="logo" />
-
-                    </Header>
-                    <Layout>
-
-                        <Layout style={{ padding: '0 24px 24px' }}>
-                            <Content
-                                className="site-layout-background"
-                                style={{
-                                    padding: 24,
-                                    margin: 0,
-                                    minHeight: 580,
-                                }}
-                            >
-                                <FormEdit onFinish={onFinish} onFinishFailed={onFinishFailed} />
-                            </Content>
-                        </Layout>
-
-                        <Sider width={300} className="site-layout-background">
-                            {/* {profile ? <UserProfile profile={profile} /> : null} */}
-                        </Sider>
-                    </Layout>
-                </Layout>
+                <FormEdit onFinish={onFinish} onFinishFailed={onFinishFailed} />
             </div>
         </>
-
     );
-
 }
 
 interface FormEditProps {

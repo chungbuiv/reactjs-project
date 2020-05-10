@@ -19,7 +19,6 @@ export function UserProfile() {
             } catch (e) {
                 console.log(e);
             }
-
         })();
     }, []);
 
@@ -40,28 +39,27 @@ export function UserProfile() {
                         <h3>{profile.name}</h3>
                         <h5>{profile.title}</h5>
                     </div>
-                    <div style={{ textAlign: 'center' }}>
-                        <Space size={"middle"}>
+                    <div style={{ textAlign: 'center', marginTop: '24px', marginBottom: '24px' }}>
+                        <Space size={"large"}>
                             <Button type="primary" onClick={editProfile}>Edit Profile</Button>
                             <Button type="primary">Change Status</Button>
                         </Space>
                     </div>
-                    <div>
+                    <div style={{marginLeft: '28px' }}>
                         <div className="roles">
-                            <h4>Role</h4>
-                            {/* <p>{profile.roles.join()}</p> */}
+                            <h3>Role</h3>
                             <p>{profile.roles}</p>
                         </div>
                         <div className="email">
-                            <h4>Email</h4>
+                            <h3>Email</h3>
                             <p>{profile.email}</p>
                         </div>
                         <div className="phone">
-                            <h4>Phone</h4>
+                            <h3>Phone</h3>
                             <p>{profile.phone}</p>
                         </div>
                         <div className="bio">
-                            <h4>Bio</h4>
+                            <h3>Bio</h3>
                             <p>{profile.bio}</p>
                         </div>
                     </div>
